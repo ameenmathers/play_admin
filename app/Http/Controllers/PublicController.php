@@ -14,10 +14,6 @@ class PublicController extends Controller
 
     public function uploadReferral()
     {
-
-        $referrer = Referrer::find(1);
-        echo '<pre>'; print_r(count($referrer->referrals)); echo '</pre>'; exit;
-
         return view('upload-referral');
     }
 
@@ -25,22 +21,37 @@ class PublicController extends Controller
 
         // try{
 
+
         $referrer = new referrer();
-        $referrer->email = $request->input('email');
-        $referrer->save();
+
+        if(count($referrer->referrals) >= 3) {
+
+
+            $referrer->email = $request->input('email');
+            $referrer->save();
+
+            $referral      = new referral();
+            $referral->referee_name = $request->input('referee_name');;
+            $referral->referee_email = $request->input('referee_email');;
+            $referral->referee_phone = $request->input('referee_phone');;
+            $referral->referrer_id = $referrer->id;
+            $referral->save();
+
+            $request->session()->flash('success','Referral was Successful.');
+
+        } else {
+
+
+
+            $request->session()->flash('error','Referral was Limit Exceeded.');
+
+          }
 
 
 
 
-        $referral      = new referral();
-        $referral->referee_name = $request->input('referee_name');;
-        $referral->referee_email = $request->input('referee_email');;
-        $referral->referee_phone = $request->input('referee_phone');;
-        $referral->id = $referrer->id;
-        $referral->save();
 
 
-        $request->session()->flash('success','Referral was Successful.');
 
         return redirect('upload-referral');
 

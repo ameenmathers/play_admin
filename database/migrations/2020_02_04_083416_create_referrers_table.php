@@ -15,7 +15,7 @@ class CreateReferrersTable extends Migration
     {
         Schema::create('referrers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('name');
+            $table->text('name')->nullable();
             $table->string('email')->unique();
             $table->timestamps();
         });
