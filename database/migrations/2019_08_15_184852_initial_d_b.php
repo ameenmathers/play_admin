@@ -17,8 +17,12 @@ class InitialDB extends Migration
             $table->bigIncrements('uid');
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->boolean('is_paid')->default(0);
+            $table->boolean('is_approved')->default(0);
+            $table->string('approved_by')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -29,21 +33,17 @@ class InitialDB extends Migration
             $table->timestamp('created_at')->nullable();
         });
 
-        Schema::create('images', function (Blueprint $table) {
-            $table->increments('imid');
-            $table->string('url',2000);
-            $table->integer('eid')->nullable();
-            $table->integer('nid')->nullable();
-            $table->integer('pid')->nullable();
-            $table->integer('uid')->nullable();
-            $table->timestamps();
-        });
-
 
         Schema::create('events', function (Blueprint $table) {
             $table->increments('eid');
             $table->string('name');
+            $table->string('location');
+            $table->timestamp('date');
             $table->string('desc');
+            $table->string('type');
+            $table->string('paymenturl')->nullable();
+            $table->string('rsvpurl')->nullable();
+            $table->string('image',2000);
             $table->timestamps();
         });
 
@@ -52,6 +52,8 @@ class InitialDB extends Migration
             $table->increments('nid');
             $table->string('name');
             $table->string('desc');
+            $table->string('image',2000);
+            $table->string('image2',2000);
             $table->timestamps();
         });
 
@@ -59,8 +61,36 @@ class InitialDB extends Migration
             $table->increments('fid');
             $table->string('name');
             $table->string('desc');
+            $table->string('paymenturl');
+            $table->string('image',2000);
             $table->timestamps();
         });
+
+        Schema::create('privileges', function (Blueprint $table) {
+            $table->increments('pid');
+            $table->string('name');
+            $table->string('desc');
+            $table->string('code');
+            $table->string('type');
+            $table->string('image',2000);
+            $table->timestamps();
+        });
+
+
+        Schema::create('gallery', function (Blueprint $table) {
+            $table->increments('gid');
+            $table->string('name');
+            $table->string('desc');
+            $table->string('image',2000);
+            $table->string('image2',2000);
+            $table->string('image3',2000);
+            $table->timestamps();
+        });
+
+
+
+
+
     }
 
     /**
@@ -72,5 +102,11 @@ class InitialDB extends Migration
     {
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_resets');
+        Schema::dropIfExists('images');
+        Schema::dropIfExists('events');
+        Schema::dropIfExists('news');
+        Schema::dropIfExists('foundations');
+        Schema::dropIfExists('privileges');
+        Schema::dropIfExists('gallery');
     }
 }

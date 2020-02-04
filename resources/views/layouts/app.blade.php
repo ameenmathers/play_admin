@@ -12,6 +12,8 @@
     <meta name="keywords" content="admin,dashboard" />
     <meta name="author" content="" />
 
+    <link rel="shortcut icon" type="image/png" href="assets2/images/favicon.png"/>
+
     <!-- Styles -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
     <link href="assets2/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet"/>
@@ -64,7 +66,7 @@
                 </a>
             </div>
             <div class="logo-box">
-                <a href="#" class="logo-text"><span>Play Network Africa</span></a>
+                <a href="#" class="logo-text"><span>Play</span></a>
             </div><!-- Logo Box -->
             <div class="search-button">
                 <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
@@ -119,7 +121,7 @@
                                 <img class="img-circle avatar" src="assets2/images/avatar.png" width="40" height="40" alt="">
                             </a>
                             <ul class="dropdown-menu dropdown-list" role="menu">
-                                <li role="presentation"><a href="#"><i class="fa fa-user"></i>Profile</a></li>
+                                <li role="presentation"><a href="{{url('settings')}}"><i class="fa fa-user"></i>Profile</a></li>
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation"><a href="{{url('logout')}}"><i class="fa fa-sign-out m-r-xs"></i>Log out</a></li>
                             </ul>
@@ -152,11 +154,16 @@
             <ul class="menu accordion-menu">
                 <li class="active"><a href="{{url('home')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>
 
-                <li><a href="{{url('')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Users</p></a></li>
-                <li><a href="{{url('')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-calender"></span><p>Events</p></a></li>
-                <li><a href="{{url('')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-gift"></span><p>Privileges</p></a></li>
-                <li><a href="{{url('')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-map"></span><p>Foundation</p></a></li>
+                <li><a href="{{url('events-table')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-calendar"></span><p>Events</p></a></li>
+                <li><a href="{{url('news-table')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-book"></span><p>News</p></a></li>
+                <li><a href="{{url('privileges-table')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-gift"></span><p>Privileges</p></a></li>
+                <li><a href="{{url('foundations-table')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-globe"></span><p>Foundation</p></a></li>
                 <li><a href="{{url('upload-event')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-save"></span><p>Upload Event</p></a></li>
+                <li><a href="{{url('upload-news')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-save"></span><p>Upload News</p></a></li>
+                <li><a href="{{url('upload-foundation')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-save"></span><p>Upload Foundation</p></a></li>
+                <li><a href="{{url('upload-privilege')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-save"></span><p>Upload Privilege</p></a></li>
+                <li><a href="{{url('upload-gallery')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-save"></span><p>Upload Gallery</p></a></li>
+                <li><a href="{{url('settings')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p>Settings</p></a></li>
             </ul>
         </div><!-- Page Sidebar Inner -->
     </div><!-- Page Sidebar -->

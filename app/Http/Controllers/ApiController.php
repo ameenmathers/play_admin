@@ -2,14 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
-use App\Events\ProcessTransactions;
-use App\Events\UserForgotPassword;
 use App\Mail\WelcomeUserMail;
-use App\notification;
-use App\passwordRestCode;
-use App\payment;
-use App\transaction;
 use App\User;
 use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 use Carbon\Carbon;
@@ -19,10 +14,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use PassowrdResetCode;
 use App\Event;
 use App\Privilege;
 use App\Foundation;
+use App\Gallery;
+use App\News;
+
+
+
 
 
 
@@ -36,14 +35,16 @@ class ApiController extends Controller
         $email = $request->input('email');
         $phone = $request->input('phone');
         $name = $request->input('name');
+        $password = $request->input('password');
 
         if (empty($email)) return response(array("message" => "Email is required"), 400);
         if (empty($phone)) return response(array("message" => "Phone is required"), 400);
+        if (empty($password)) return response(array("message" => "Password is required"), 400);
+
 
         if (User::where('email', $email)->count() > 0) return response(['message' => 'Email already exists'], 401);
         if (User::where('phone', $phone)->count() > 0) return response(['message' => 'Phone number already exists'], 401);
 
-        if (empty($name)) $name = "Customer";
 
 
         try {
@@ -54,13 +55,42 @@ class ApiController extends Controller
             $user->phone = $request->input('phone');
             $user->password = bcrypt($request->input('password'));
             $user->save();
-            event(new WelcomeUserMail($user));
             return response(['message' => 'Successful', 'data' => $user], 200);
         } catch (\Exception $exception) {
-            Bugsnag::notifyException($exception);
             return response(array("message" => "Something went wrong."), 500);
         }
 
+    }
+
+    public function events()
+    {
+        $events = Event::all();
+        return response($events);
+    }
+
+    public function news()
+    {
+        $news = News::all();
+        return response($news);
+    }
+
+
+    public function privileges()
+    {
+        $privileges = privilege::all();
+        return response($privileges);
+    }
+
+    public function gallery()
+    {
+        $gallery = Gallery::all();
+        return response($gallery);
+    }
+
+    public function foundation()
+    {
+        $foundations = Foundation::all();
+        return response($foundations);
     }
 
 
@@ -74,12 +104,13 @@ class ApiController extends Controller
         if (empty($password)) return response(['message' => 'password is required'], 400);
 
 
-        $user = User::where('email', $username)->first();
-        if (count($user) > 0) {
+
+        if (User::where('email', $username)->count() > 0) {
+            $user = User::where('email', $username)->first();
             if (Auth::attempt(['email' => $username, 'password' => $password])) {
                 $authUser = Auth::user();
-                $success['token'] = $authUser->createToken('Personal Access Token')->accessToken;
-                return response(['message' => 'Successful', 'data' => $authUser, 'authorization_token' => $success], 200);
+                $authUser['token'] = $authUser->createToken('Personal Access Token')->accessToken;
+                return response(['message' => 'Successful', 'data' => $authUser ], 200);
             } else {
                 return response(['message' => 'error, username and password do not match'], 401);
             }
@@ -138,47 +169,6 @@ class ApiController extends Controller
 
     }
 
-
-
-    public function addevent(Request $request) {
-
-        $uid = $request->user()->uid;
-        $name = $request->input('name');
-        $eventNumber = $request->input('event_number');
-        $distributionCompany = $request->input('distribution_company');
-        $type = $request->input('type');
-
-
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-
-            $rand = $uid . Str::random(5) . \Carbon\Carbon::now()->timestamp;
-
-            $fileName = $image->getClientOriginalName();
-
-            $filepath = 'uploads/event_images/' . $rand . $fileName;
-
-            Storage::disk('public')->put($filepath, file_get_contents($image));
-
-            $imageUrl = asset("storage/" . $filepath);
-
-        } else $imageUrl = url('images/default.png');
-
-
-        if (empty($name)) return response(['message' => 'Name is required'], 400);
-        if (empty($desc)) return response(['message' => 'Description is required'], 400);
-
-
-        $event = new event();
-        $event->uid = $uid;
-        $event->image = $imageUrl;
-        $event->name = $name;
-        $event->desc = $desc;
-        $event->save();
-
-        return response(['message' => 'Successful', 'data' => $event], 200);
-
-    }
 
 
 }
