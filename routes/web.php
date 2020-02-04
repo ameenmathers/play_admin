@@ -28,8 +28,8 @@ Route::get('/foundations-table','HomeController@foundationsTable');
 Route::get('/gallery-table','HomeController@galleryTable');
 
 
-Route::get('/upload-referral','PublicController@uploadReferral');
-Route::post('/upload-referral','PublicController@postUploadReferral');
+Route::get('/referral-create','ReferralController@create');
+Route::post('/referral-store','ReferralController@store');
 
 
 Route::get('/upload-event','HomeController@uploadEvent');
